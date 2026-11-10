@@ -12,11 +12,6 @@
   
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-
-  <!-- Firebase SDKs para sincronizar mesas e convidados em tempo real -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-  <script src="config.js"></script>
 </head>
 <body>
 
@@ -154,7 +149,7 @@
       </form>
     </section>
 
-    <!-- Secção Encontre a sua Mesa (Sincronizado com o Firebase do Protocolo) -->
+    <!-- Secção Encontre a sua Mesa -->
     <div class="container" style="text-align: center; margin: 40px auto; max-width: 400px; padding: 0 15px;">
       <h2 style="color: #c5a059;">Encontre a sua Mesa</h2>
       <p style="color: #666; font-size: 0.95rem;">Digite o seu nome para consultar a sua mesa e lugar:</p>
@@ -169,37 +164,10 @@
       <div id="results" style="margin-top: 20px;"></div>
     </div>
 
+    <!-- Importa o ficheiro externo separado com a lista de convidados -->
+    <script src="convidados.js"></script>
+
     <script>
-      // Inicializa o Firebase no Convite e lê as mesas em tempo real do protocolo
-      if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-      }
-      const dbRefConvite = firebase.database().ref('dadosMesas');
-
-      let listaConvidadosDinamica = [];
-
-      dbRefConvite.on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          let arrayDados = Array.isArray(data) ? data : Object.values(data);
-          listaConvidadosDinamica = [];
-          
-          arrayDados.forEach(grupo => {
-            if (grupo && grupo.convidados) {
-              grupo.convidados.forEach(c => {
-                listaConvidadosDinamica.push({
-                  id: c.id,
-                  nome: c.nome,
-                  acompanhantes: c.acompanhantes || "-",
-                  mesa: grupo.mesa,
-                  confirmado: c.acomodado
-                });
-              });
-            }
-          });
-        }
-      });
-
       function limparTexto(texto) {
         if (!texto) return "";
         return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -235,7 +203,7 @@
           return;
         }
 
-        const encontrados = listaConvidadosDinamica.filter(c => nomesCoincidem(termoDigitado, c.nome));
+        const encontrados = listaConvidados.filter(c => nomesCoincidem(termoDigitado, c.nome));
 
         if (encontrados.length === 0) {
           resultsDiv.innerHTML = '<p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Nenhum convidado encontrado com esse nome.</p>';
@@ -248,7 +216,6 @@
           card.innerHTML = `
             <div style="font-weight: bold; color: #222; font-size: 1rem;">👤 ${item.nome}</div>
             <div style="color: #c5a059; font-weight: bold; margin-top: 6px; font-size: 1.05rem;">📍 ${item.mesa}</div>
-            <div style="color: #666; font-size: 0.8rem; margin-top: 4px;">Acompanhantes: ${item.acompanhantes}</div>
           `;
           resultsDiv.appendChild(card);
         });
@@ -277,7 +244,7 @@
       <div id="mural-cards" class="mural-cards"></div>
     </section>
 
-    <!-- Lista de Presentes (PIX / M-Pesa / Banco) -->
+    <!-- Lista de Presentes -->
     <section class="section presentes-section reveal">
       <div class="presentes-icon-circle">🎁</div>
       <h2 class="presentes-title">Lista de Presentes</h2>
@@ -433,7 +400,6 @@
             <button type="button" data-presente="Congelador" onclick="escolherPresente('Congelador', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">Escolher</button>
           </div>
         </div>
-
       </div>
 
       <!-- Painel de Registo Interno -->
