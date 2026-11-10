@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (presenca === "sim") {
         texto = `*Confirmação de Presença - Casamento*%0A%0A`;
-        texto += `Olá! Confirmamos a nossa presença com muito gosto! 🎉%0A%0A`;
+        texto += `Olá! Confirmamos a nossa presença! 🎉%0A%0A`;
         texto += `👤 *Convidado:* ${nome1}%0A`;
         if (nome2) texto += `👥 *Acompanhante:* ${nome2}%0A`;
       } else {
@@ -210,8 +210,8 @@ function escolherPresente(presente, btn) {
 
   marcarComoEscolhido(btn);
 
-  const numeroTelefone = "258845770605";
-  const textoMensagem = `Olá! O seguinte presente foi escolhido na lista do site: 🎁 *${presente}* (Data: ${dataHora})`;
+  const numeroTelefone = "258849301792";
+  const textoMensagem = `Olá! O  presente escolhido na lista do site: 🎁 *${presente}* (Data: ${dataHora})`;
   const urlWhatsapp = `https://wa.me/${numeroTelefone}?text=${encodeURIComponent(textoMensagem)}`;
 
   window.open(urlWhatsapp, "_blank");
