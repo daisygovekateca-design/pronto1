@@ -11,7 +11,6 @@ function openInvitation() {
     });
   }
 
-  // Rola suavemente até o conteúdo principal
   const mainContent = document.getElementById('main-content');
   if (mainContent) {
     mainContent.scrollIntoView({ behavior: 'smooth' });
@@ -81,10 +80,15 @@ document.addEventListener('DOMContentLoaded', function() {
     rsvpForm.addEventListener('submit', function(e) {
       e.preventDefault();
 
-      const nome1 = document.getElementById('nome1').value;
-      const nome2 = document.getElementById('nome2').value;
+      const nome1 = document.getElementById('nome1').value.trim();
+      const nome2 = document.getElementById('nome2').value.trim();
       const presencaOpcao = document.querySelector('input[name="presenca"]:checked');
       const presenca = presencaOpcao ? presencaOpcao.value : 'sim';
+      const dataHora = new Date().toLocaleString("pt-PT");
+
+      let listaRSVP = JSON.parse(localStorage.getItem("registoRSVP") || "[]");
+      listaRSVP.push({ nome1, nome2, presenca, data: dataHora });
+      localStorage.setItem("registoRSVP", JSON.stringify(listaRSVP));
 
       const numeroWhatsApp = "258849301792";
       let texto = "";
@@ -150,12 +154,6 @@ function carregarMensagensDoStorage() {
         <p>"Desejo toda a felicidade do mundo a vocês dois! Que este amor seja eterno."</p>
         <span class="mural-footer">Com carinho</span>
       </div>
-      <div class="mural-card">
-        <h4>Carlos Mendes</h4>
-        <span class="mural-date">18 de Outubro, 2026</span>
-        <p>"Parabéns pelo grande dia! Mal posso esperar para celebrar convosco."</p>
-        <span class="mural-footer">Com carinho</span>
-      </div>
   `;
 
   mensagensGuardadas.forEach(msg => {
@@ -211,7 +209,7 @@ function escolherPresente(presente, btn) {
   marcarComoEscolhido(btn);
 
   const numeroTelefone = "258849301792";
-  const textoMensagem = `Olá! O  presente escolhido na lista do site: 🎁 *${presente}* (Data: ${dataHora})`;
+  const textoMensagem = `Olá! O presente escolhido na lista do site: 🎁 *${presente}* (Data: ${dataHora})`;
   const urlWhatsapp = `https://wa.me/${numeroTelefone}?text=${encodeURIComponent(textoMensagem)}`;
 
   window.open(urlWhatsapp, "_blank");
@@ -224,13 +222,27 @@ function marcarComoEscolhido(btn) {
   btn.disabled = true;
 }
 
-// Controlo do Painel Privado Protegido por Código
+// 8. Gestão Dinâmica de Convidados e Painel Privado (Código: Larissa)
+function obterListaConvidadosDinamica() {
+  let salvos = localStorage.getItem("listaConvidadosCustomizada");
+  if (salvos) {
+    return JSON.parse(salvos);
+  } else {
+    if (typeof listaConvidados !== 'undefined') {
+      localStorage.setItem("listaConvidadosCustomizada", JSON.stringify(listaConvidados));
+      return listaConvidados;
+    }
+    return [];
+  }
+}
+
 function abrirPainelSecreto() {
   const codigo = prompt("Digite o código de acesso:");
   if (codigo === "Larissa") {
     document.getElementById('modalPainel').style.display = 'flex';
     atualizarPainelAdminRSVP();
     atualizarInterfaceEHistoricoPresentes();
+    atualizarPainelAdminConvidados();
   } else if (codigo !== null) {
     alert("Código incorreto!");
   }
@@ -238,6 +250,135 @@ function abrirPainelSecreto() {
 
 function fecharPainelSecreto() {
   document.getElementById('modalPainel').style.display = 'none';
+}
+
+function atualizarPainelAdminConvidados() {
+  const container = document.getElementById("listaGestaoConvidados");
+  if (!container) return;
+
+  const convidados = obterListaConvidadosDinamica();
+  container.innerHTML = "";
+
+  if (convidados.length === 0) {
+    container.innerHTML = "<p style='color: #888; font-size: 0.8rem;'>Nenhum convidado registado.</p>";
+    return;
+  }
+
+  convidados.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 8px 10px; margin-bottom: 6px; border-radius: 8px; border: 1px solid #e0d5c1;";
+    
+    div.innerHTML = `
+      <div style="font-size: 0.8rem; color: #333;">
+        <strong>${item.nome}</strong><br>
+        <span style="color: #c5a059; font-size: 0.75rem;">📍 ${item.mesa}</span>
+      </div>
+      <div style="display: flex; gap: 5px;">
+        <button onclick="editarConvidado(${index})" style="background: #3498db; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; cursor: pointer;">Editar</button>
+        <button onclick="excluirConvidado(${index})" style="background: #e74c3c; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; cursor: pointer;">Excluir</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function adicionarConvidadoForm(event) {
+  event.preventDefault();
+  const nome = document.getElementById("novoNomeConvidado").value.trim();
+  const mesa = document.getElementById("novaMesaConvidado").value.trim();
+
+  if (!nome || !mesa) return;
+
+  let convidados = obterListaConvidadosDinamica();
+  convidados.push({ nome: nome, mesa: mesa, confirmado: true });
+  
+  localStorage.setItem("listaConvidadosCustomizada", JSON.stringify(convidados));
+  
+  document.getElementById("formAdicionarConvidado").reset();
+  atualizarPainelAdminConvidados();
+  alert("Convidado adicionado com sucesso!");
+}
+
+function excluirConvidado(index) {
+  if (confirm("Tens a certeza que pretendes excluir este convidado?")) {
+    let convidados = obterListaConvidadosDinamica();
+    convidados.splice(index, 1);
+    localStorage.setItem("listaConvidadosCustomizada", JSON.stringify(convidados));
+    atualizarPainelAdminConvidados();
+  }
+}
+
+function editarConvidado(index) {
+  let convidados = obterListaConvidadosDinamica();
+  let item = convidados[index];
+
+  const novoNome = prompt("Editar nome do convidado:", item.nome);
+  if (novoNome === null) return;
+
+  const novaMesa = prompt("Editar nome/número da mesa:", item.mesa);
+  if (novaMesa === null) return;
+
+  if (novoNome.trim() && novaMesa.trim()) {
+    convidados[index].nome = novoNome.trim();
+    convidados[index].mesa = novaMesa.trim();
+    localStorage.setItem("listaConvidadosCustomizada", JSON.stringify(convidados));
+    atualizarPainelAdminConvidados();
+    alert("Convidado atualizado com sucesso!");
+  }
+}
+
+function limparTexto(texto) {
+  if (!texto) return "";
+  return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+}
+
+function nomesCoincidem(nomeBuscado, nomeCadastrado) {
+  const busca = limparTexto(nomeBuscado);
+  const cadastro = limparTexto(nomeCadastrado);
+
+  if (!busca) return false;
+  if (cadastro.includes(busca) || busca.includes(cadastro)) return true;
+
+  const palavrasBusca = busca.split(/\s+/);
+  const palavrasCadastro = cadastro.split(/\s+/);
+
+  if (palavrasBusca.every(palavra => cadastro.includes(palavra))) return true;
+  if (palavrasCadastro.every(palavra => busca.includes(palavra))) return true;
+
+  return false;
+}
+
+function executarPesquisaMesa() {
+  const inputElement = document.getElementById('searchInput');
+  const resultsDiv = document.getElementById('results');
+  
+  if (!inputElement || !resultsDiv) return;
+
+  const termoDigitado = inputElement.value;
+  resultsDiv.innerHTML = '';
+
+  if (!termoDigitado.trim()) {
+    resultsDiv.innerHTML = '<p style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px;">Por favor, digite o seu nome para pesquisar.</p>';
+    return;
+  }
+
+  const listaAtual = obterListaConvidadosDinamica();
+  const encontrados = listaAtual.filter(c => nomesCoincidem(termoDigitado, c.nome));
+
+  if (encontrados.length === 0) {
+    resultsDiv.innerHTML = '<p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Nenhum convidado encontrado com esse nome.</p>';
+    return;
+  }
+
+  encontrados.forEach(item => {
+    const card = document.createElement('div');
+    card.style.cssText = "background: #ffffff; border: 1px solid #c5a059; border-radius: 16px; padding: 15px; margin-top: 10px; box-shadow: 0 4px 10px rgba(197, 160, 89, 0.15); text-align: left;";
+    card.innerHTML = `
+      <div style="font-weight: bold; color: #222; font-size: 1rem;">👤 ${item.nome}</div>
+      <div style="color: #c5a059; font-weight: bold; margin-top: 6px; font-size: 1.05rem;">📍 ${item.mesa}</div>
+    `;
+    resultsDiv.appendChild(card);
+  });
 }
 
 function atualizarPainelAdminRSVP() {
@@ -297,7 +438,7 @@ function limparRegistosPresentes() {
   }
 }
 
-// 8. Efeito de animação ao fazer scroll
+// 9. Efeito de animação ao fazer scroll
 function animarAoScroll() {
   const elementos = document.querySelectorAll('.reveal');
   const alturaJanela = window.innerHeight;

@@ -164,64 +164,6 @@
       <div id="results" style="margin-top: 20px;"></div>
     </div>
 
-    <!-- Importa o ficheiro externo separado com a lista de convidados -->
-    <script src="convidados.js"></script>
-
-    <script>
-      function limparTexto(texto) {
-        if (!texto) return "";
-        return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-      }
-
-      function nomesCoincidem(nomeBuscado, nomeCadastrado) {
-        const busca = limparTexto(nomeBuscado);
-        const cadastro = limparTexto(nomeCadastrado);
-
-        if (!busca) return false;
-        if (cadastro.includes(busca) || busca.includes(cadastro)) return true;
-
-        const palavrasBusca = busca.split(/\s+/);
-        const palavrasCadastro = cadastro.split(/\s+/);
-
-        if (palavrasBusca.every(palavra => cadastro.includes(palavra))) return true;
-        if (palavrasCadastro.every(palavra => busca.includes(palavra))) return true;
-
-        return false;
-      }
-
-      function executarPesquisaMesa() {
-        const inputElement = document.getElementById('searchInput');
-        const resultsDiv = document.getElementById('results');
-        
-        if (!inputElement || !resultsDiv) return;
-
-        const termoDigitado = inputElement.value;
-        resultsDiv.innerHTML = '';
-
-        if (!termoDigitado.trim()) {
-          resultsDiv.innerHTML = '<p style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px;">Por favor, digite o seu nome para pesquisar.</p>';
-          return;
-        }
-
-        const encontrados = listaConvidados.filter(c => nomesCoincidem(termoDigitado, c.nome));
-
-        if (encontrados.length === 0) {
-          resultsDiv.innerHTML = '<p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Nenhum convidado encontrado com esse nome.</p>';
-          return;
-        }
-
-        encontrados.forEach(item => {
-          const card = document.createElement('div');
-          card.style.cssText = "background: #ffffff; border: 1px solid #c5a059; border-radius: 16px; padding: 15px; margin-top: 10px; box-shadow: 0 4px 10px rgba(197, 160, 89, 0.15); text-align: left;";
-          card.innerHTML = `
-            <div style="font-weight: bold; color: #222; font-size: 1rem;">👤 ${item.nome}</div>
-            <div style="color: #c5a059; font-weight: bold; margin-top: 6px; font-size: 1.05rem;">📍 ${item.mesa}</div>
-          `;
-          resultsDiv.appendChild(card);
-        });
-      }
-    </script>
-
     <!-- Mural de Mensagens -->
     <section class="section mural-section reveal">
       <h2 class="section-title">Mural de Mensagens</h2>
@@ -275,7 +217,6 @@
       </p>
 
       <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-        <!-- 1. Batedeira Planetária -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_6458.jpg" alt="Batedeira Planetária" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -284,7 +225,6 @@
           </div>
         </div>
 
-        <!-- 2. TV -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_6469.jpg" alt="TV" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -293,7 +233,6 @@
           </div>
         </div>
 
-        <!-- 3. Airfryer -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_6457.jpg" alt="Airfryer" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -302,7 +241,6 @@
           </div>
         </div>
 
-        <!-- 4. AC -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_8524.PNG" alt="AC" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -311,7 +249,6 @@
           </div>
         </div>
 
-        <!-- 5. Sofá -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_6471.jpg" alt="Sofá" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -320,7 +257,6 @@
           </div>
         </div>
 
-        <!-- 6. Mesa de jantar -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_6473.jpg" alt="Mesa de jantar" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -329,7 +265,6 @@
           </div>
         </div>
 
-        <!-- 7. Cama -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_8525.PNG" alt="Cama" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -338,7 +273,6 @@
           </div>
         </div>
 
-        <!-- 8. Estante -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_8582.PNG" alt="Estante" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -347,7 +281,6 @@
           </div>
         </div>
 
-        <!-- 9. Microondas -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_8529.PNG" alt="Microondas" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -356,7 +289,6 @@
           </div>
         </div>
 
-        <!-- 10. Mesinha de centro -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_6467.jpeg" alt="Mesinha de centro" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -365,7 +297,6 @@
           </div>
         </div>
 
-        <!-- 11. Geladeira -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_6474.jpg" alt="Geladeira" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -374,7 +305,6 @@
           </div>
         </div>
 
-        <!-- 12. Fogão -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="IMG_6456.jpg" alt="Fogão" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -383,7 +313,6 @@
           </div>
         </div>
 
-        <!-- 13. Forno -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="forno.PNG" alt="Forno" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -392,7 +321,6 @@
           </div>
         </div>
 
-        <!-- 14. Congelador -->
         <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
           <img src="congelador.PNG" alt="Congelador" style="width: 100%; height: 110px; object-fit: cover;">
           <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
@@ -401,21 +329,11 @@
           </div>
         </div>
       </div>
-
-      <!-- Painel de Registo Interno -->
-      <div style="margin-top: 40px; background: #f9f9f9; border: 1px dashed #c5a059; border-radius: 12px; padding: 15px; text-align: left;">
-        <h3 style="font-size: 0.95rem; color: #c5a059; margin-top: 0; display: flex; justify-content: space-between; align-items: center;">
-          <span>🔒 Registo Interno de Escolhas</span>
-          <button onclick="limparRegistos()" style="background: #ff4d4d; color: white; border: none; padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; cursor: pointer;">Limpar</button>
-        </h3>
-        <ul id="listaRegistosInternos" style="font-size: 0.8rem; color: #333; padding-left: 20px; margin: 0;"></ul>
-      </div>
     </section>
 
   </main>
 
   <!-- Rodapé -->
- <!-- Rodapé -->
   <footer class="footer">
     <h2 class="names-script footer-names">Rassula & Felix</h2>
     <p class="footer-date">18 DE DEZEMBRO DE 2026</p>
@@ -439,6 +357,20 @@
         <button onclick="fecharPainelSecreto()" style="background: #ccc; border: none; border-radius: 50%; width: 28px; height: 28px; font-weight: bold; cursor: pointer;">✕</button>
       </div>
 
+      <!-- Gestão de Mesas e Convidados -->
+      <div style="margin-bottom: 25px;">
+        <h4 style="color: #333; font-size: 0.95rem; margin-bottom: 8px;">🪑 Gestão de Mesas e Convidados</h4>
+        
+        <form id="formAdicionarConvidado" onsubmit="adicionarConvidadoForm(event)" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; background: #f9f8f5; padding: 10px; border-radius: 8px; border: 1px solid #e0d5c1;">
+          <input type="text" id="novoNomeConvidado" placeholder="Nome do Convidado" required style="padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.8rem;">
+          <input type="text" id="novaMesaConvidado" placeholder="Nome da Mesa (ex: Mesa 1 — Rubi Real)" required style="padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.8rem;">
+          <button type="submit" style="background: #c5a059; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer;">+ Adicionar Convidado</button>
+        </form>
+
+        <div id="listaGestaoConvidados" style="max-height: 200px; overflow-y: auto; background: #faf9f6; padding: 10px; border-radius: 8px; border: 1px solid #f0e6d2;">
+        </div>
+      </div>
+
       <!-- Lista de RSVP -->
       <div style="margin-bottom: 25px;">
         <h4 style="color: #333; font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -446,7 +378,6 @@
           <button onclick="limparRegistoRSVP()" style="background: #ff4d4d; color: white; border: none; padding: 3px 6px; border-radius: 4px; font-size: 0.6rem; cursor: pointer;">Limpar</button>
         </h4>
         <ul id="listaRegistoRSVP" style="font-size: 0.8rem; color: #444; padding-left: 18px; margin: 0; background: #faf9f6; padding: 10px 10px 10px 25px; border-radius: 8px; border: 1px solid #f0e6d2;">
-          <!-- Dados preenchidos por JavaScript -->
         </ul>
       </div>
 
@@ -457,7 +388,6 @@
           <button onclick="limparRegistosPresentes()" style="background: #ff4d4d; color: white; border: none; padding: 3px 6px; border-radius: 4px; font-size: 0.6rem; cursor: pointer;">Limpar</button>
         </h4>
         <ul id="listaRegistosInternos" style="font-size: 0.8rem; color: #444; padding-left: 18px; margin: 0; background: #faf9f6; padding: 10px 10px 10px 25px; border-radius: 8px; border: 1px solid #f0e6d2;">
-          <!-- Dados preenchidos por JavaScript -->
         </ul>
       </div>
 
@@ -471,6 +401,8 @@
     <audio id="bg-music" src="musica.mp3" loop></audio>
   </div>
 
+  <!-- Carregamento ordenado dos scripts -->
+  <script src="convidados.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

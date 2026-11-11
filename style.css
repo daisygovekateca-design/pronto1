@@ -11,13 +11,11 @@ body {
   overflow-x: hidden;
 }
 
-/* Capa / Hero */
 /* Capa / Hero Section */
 .hero-section {
   position: relative;
   height: 100vh;
   width: 100%;
-  /* Substitui 'bg-capa.jpg' pelo nome da tua foto */
   background: url('bg-capa.JPG') center/cover no-repeat; 
   display: flex;
   align-items: center;
@@ -26,14 +24,13 @@ body {
   overflow: hidden;
 }
 
-/* O Segredo do Degradê Branco na parte inferior */
 .hero-section::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 50%; /* Controla a altura onde o degradê começa */
+  height: 50%;
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0) 0%,
@@ -43,7 +40,6 @@ body {
   z-index: 1;
 }
 
-/* Camada escura no topo (para destacar o texto dourado) */
 .hero-overlay {
   position: absolute;
   top: 0; 
@@ -54,7 +50,6 @@ body {
   z-index: 1;
 }
 
-/* Conteúdo centralizado e acima do degradê */
 .hero-content {
   position: relative;
   z-index: 2;
@@ -87,7 +82,6 @@ body {
   color: #e6e6e6;
 }
 
-/* BOTÃO DOURADO PREENCHIDO (RESTAURADO) */
 .btn-abrir {
   display: inline-block !important;
   padding: 12px 30px !important;
@@ -109,18 +103,16 @@ body {
   transform: translateY(-2px);
 }
 
-/* Estilo da seta de rolagem */
 .arrow-down {
   font-size: 1.8rem;
-  color: #8c7355; /* Cor dourada mais visível */
+  color: #8c7355;
   margin-top: 15px;
   display: block;
   opacity: 0.9;
-  text-shadow: 0px 1px 3px rgba(255, 255, 255, 0.8); /* Sombra clara para se destacar do fundo */
-  animation: bounce 2s infinite; /* Animação suave para flutuar */
+  text-shadow: 0px 1px 3px rgba(255, 255, 255, 0.8);
+  animation: bounce 2s infinite;
 }
 
-/* Animação para a seta subir e descer suavemente */
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
@@ -210,16 +202,13 @@ body {
 }
 
 .sub-date {
- /* Ajuste elegante e proporcional para a data */
-
-  font-family: 'Montserrat', sans-serif; /* Fonte uniforme e limpa */
-  font-size: 0.95rem;                    /* Tamanho equilibrado */
-  font-weight: 500;                       /* Peso médio elegante */
-  letter-spacing: 2px;                   /* Espaçamento entre letras/números */
-  color: #b89759;                         /* Tom dourado harmonioso */
-  text-transform: uppercase;             /* Tudo em maiúsculas */
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #b89759;
+  text-transform: uppercase;
   margin: 15px 0 25px 0;
-
 }
 
 /* Programa */
@@ -328,24 +317,34 @@ body {
 
 .radio-group {
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .radio-card {
   flex: 1;
-  border: 1px solid #eee;
-  padding: 12px 8px;
-  border-radius: 8px;
-  background: #fbf8f3;
-  font-size: 0.75rem;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  text-align: center;
   cursor: pointer;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
 }
 
-.radio-card input {
+.radio-card input[type="radio"] {
   display: none;
+}
+
+.radio-card.active {
+  border-color: #b89759;
+  background-color: #fefcf7;
+  box-shadow: 0 4px 10px rgba(184, 151, 89, 0.15);
+  font-weight: 600;
+  color: #8c7355;
 }
 
 .btn-submit {
@@ -364,6 +363,24 @@ body {
 /* Mural */
 .mural-section {
   background-color: #fbf8f3;
+}
+
+.mural-form {
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.btn-mural {
+  width: 100%;
+  background-color: #b89759;
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 .mural-card {
@@ -401,35 +418,13 @@ body {
   color: #c5a059;
 }
 
-/* Galeria */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.gallery-item {
-  aspect-ratio: 1;
-  background: #eee;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* Presentes */
-/* Secção Lista de Presentes */
 .presentes-section {
   text-align: center;
   padding: 50px 20px;
-  background-color: #faf7f2; /* Fundo creme suave igual à imagem */
+  background-color: #faf7f2;
 }
 
-/* Ícone num círculo suave */
 .presentes-icon-circle {
   width: 60px;
   height: 60px;
@@ -457,7 +452,6 @@ body {
   line-height: 1.5;
 }
 
-/* Contentor de botões empilhados */
 .presentes-buttons {
   max-width: 400px;
   margin: 0 auto;
@@ -466,14 +460,13 @@ body {
   gap: 12px;
 }
 
-/* Botões Arredondados Brancos */
 .btn-presente {
   width: 100%;
   background-color: #ffffff;
   color: #8c7355;
   border: 1px solid #eae2d6;
   padding: 16px;
-  border-radius: 30px; /* Bordas arredondadas estilo pílula */
+  border-radius: 30px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -486,9 +479,8 @@ body {
   transform: translateY(-1px);
 }
 
-/* Área de Detalhes (Aparece diretamente abaixo sem sobrepor nada) */
 .detalhes-info {
-  display: none; /* Inicia escondido */
+  display: none;
   background-color: #ffffff;
   border: 1px solid #ebdcc8;
   border-radius: 16px;
@@ -577,67 +569,15 @@ body {
   color: #8c7355;
   font-weight: 600;
 }
-/* Estilo das opções do Radio no RSVP */
-.radio-group {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-}
 
-.radio-card {
-  flex: 1;
-  padding: 12px 15px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  background-color: #f9f9f9;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.radio-card input[type="radio"] {
-  display: none; /* Esconde o círculo padrão */
-}
-
-/* Estado Ativo / Selecionado (Destaque Visual) */
-.radio-card.active {
-  border-color: #b89759;
-  background-color: #fefcf7;
-  box-shadow: 0 4px 10px rgba(184, 151, 89, 0.15);
-  font-weight: 600;
-  color: #8c7355;
-}
-
-/* Formulário do Mural */
-.mural-form {
-  margin-bottom: 30px;
-  text-align: left;
-}
-
-.btn-mural {
-  width: 100%;
-  background-color: #b89759;
-  color: #ffffff;
-  border: none;
-  padding: 14px;
-  border-radius: 25px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 10px;
-}
-/* Evita o zoom automático no Safari/iOS ao clicar nos campos */
 input[type="text"],
 input[type="email"],
 input[type="number"],
 textarea,
 select {
-  font-size: 16px !important; /* Tamanho mínimo para não ativar o auto-zoom */
+  font-size: 16px !important;
 }
-/* Efeito de ascender suave ao fazer scroll */
+
 .reveal {
   opacity: 0;
   transform: translateY(40px);
@@ -645,7 +585,6 @@ select {
   will-change: opacity, transform;
 }
 
-/* Estado ativo quando o elemento entra no ecrã */
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
