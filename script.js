@@ -224,6 +224,79 @@ function marcarComoEscolhido(btn) {
   btn.disabled = true;
 }
 
+// Controlo do Painel Privado Protegido por Código
+function abrirPainelSecreto() {
+  const codigo = prompt("Digite o código de acesso:");
+  if (codigo === "Larissa") {
+    document.getElementById('modalPainel').style.display = 'flex';
+    atualizarPainelAdminRSVP();
+    atualizarInterfaceEHistoricoPresentes();
+  } else if (codigo !== null) {
+    alert("Código incorreto!");
+  }
+}
+
+function fecharPainelSecreto() {
+  document.getElementById('modalPainel').style.display = 'none';
+}
+
+function atualizarPainelAdminRSVP() {
+  const listaHtml = document.getElementById("listaRegistoRSVP");
+  if (!listaHtml) return;
+
+  const registos = JSON.parse(localStorage.getItem("registoRSVP") || "[]");
+  listaHtml.innerHTML = "";
+
+  if (registos.length === 0) {
+    listaHtml.innerHTML = "<li style='color: #888;'>Nenhuma confirmação de presença registada ainda.</li>";
+    return;
+  }
+
+  registos.forEach(reg => {
+    const li = document.createElement("li");
+    li.style.marginBottom = "6px";
+    let statusCor = reg.presenca === "sim" ? "color: #27ae60;" : "color: #e74c3c;";
+    let statusTexto = reg.presenca === "sim" ? "Confirmado (Sim)" : "Não poderá ir";
+    
+    li.innerHTML = `<strong>${reg.nome1}</strong> ${reg.nome2 ? 'e ' + reg.nome2 : ''} — <span style="${statusCor} font-weight: bold;">${statusTexto}</span> <span style="color: #777; font-size: 0.7rem;">(${reg.data})</span>`;
+    listaHtml.appendChild(li);
+  });
+}
+
+function limparRegistoRSVP() {
+  if (confirm("Tem certeza que deseja limpar o histórico de confirmações?")) {
+    localStorage.removeItem("registoRSVP");
+    atualizarPainelAdminRSVP();
+  }
+}
+
+function atualizarInterfaceEHistoricoPresentes() {
+  const registos = JSON.parse(localStorage.getItem("registosPresentes") || "[]");
+  const listaHtml = document.getElementById("listaRegistosInternos");
+  if (!listaHtml) return;
+  
+  listaHtml.innerHTML = "";
+
+  if (registos.length === 0) {
+    listaHtml.innerHTML = "<li style='color: #888;'>Nenhum presente escolhido até o momento.</li>";
+    return;
+  }
+
+  registos.forEach(reg => {
+    const li = document.createElement("li");
+    li.style.marginBottom = "4px";
+    li.innerHTML = `<strong>${reg.presente}</strong> <span style="color: #777; font-size: 0.75rem;">(${reg.data})</span>`;
+    listaHtml.appendChild(li);
+  });
+}
+
+function limparRegistosPresentes() {
+  if (confirm("Tem certeza que deseja limpar o histórico de presentes?")) {
+    localStorage.removeItem("registosPresentes");
+    atualizarInterfaceEHistoricoPresentes();
+  }
+}
+
 // 8. Efeito de animação ao fazer scroll
 function animarAoScroll() {
   const elementos = document.querySelectorAll('.reveal');
